@@ -7,6 +7,9 @@ import com.github.unidbg.linux.android.AndroidResolver;
 import com.github.unidbg.linux.android.dvm.*;
 import com.github.unidbg.linux.android.dvm.array.ByteArray;
 import com.github.unidbg.memory.Memory;
+import com.github.unidbg.memory.MemoryBlock;
+import com.github.unidbg.pointer.UnidbgPointer;
+import com.github.unidbg.utils.Inspector;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -106,10 +109,42 @@ public class zuiyou extends AbstractJni {
         return vm.getObject(number.intValue()).getValue().toString();
     }
 
+    public void callMd5(){
+        List<Object> list = new ArrayList<>(10);
+
+        // arg1
+        String input = "r0ysue";
+        // malloc memory
+        MemoryBlock memoryBlock1 = emulator.getMemory().malloc(16, false);
+        // get memory pointer
+        UnidbgPointer input_ptr=memoryBlock1.getPointer();
+        // write plainText on it
+        input_ptr.write(input.getBytes(StandardCharsets.UTF_8));
+
+        // arg2
+        int input_length = input.length();
+
+        // arg3 -- buffer
+        MemoryBlock memoryBlock2 = emulator.getMemory().malloc(16, false);
+        UnidbgPointer output_buffer=memoryBlock2.getPointer();
+
+        // 填入参入
+        list.add(input_ptr);
+        list.add(input_length);
+        list.add(output_buffer);
+        // run
+        module.callFunction(emulator, 0x65540 + 1, list.toArray());
+
+        // print arg3
+        Inspector.inspect(output_buffer.getByteArray(0, 0x10), "output");
+    };
+
+
     public static void main(String[] args) {
         zuiyou test = new zuiyou();
         test.native_init();
         System.out.println(test.callSign());
+        test.callMd5();
     }
 
 }
