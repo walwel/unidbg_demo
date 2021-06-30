@@ -49,30 +49,10 @@ public class qxs extends AbstractJni{
         return result;
     };
 
-//    @Override
-//    public DvmObject<?> callStaticObjectMethodV(BaseVM vm, DvmClass dvmClass, String signature, VaList vaList) {
-//        switch (signature){
-//            case "java/util/UUID->randomUUID()Ljava/util/UUID;": {
-//                return dvmClass.newObject(UUID.randomUUID());
-//            }
-//        }
-//        return super.callStaticObjectMethodV(vm, dvmClass, signature, vaList);
-//    };
-//
-//    @Override
-//    public DvmObject<?> callObjectMethodV(BaseVM vm, DvmObject<?> dvmObject, String signature, VaList vaList) {
-//        switch (signature){
-//            case "java/util/UUID->toString()Ljava/lang/String;": {
-//                String uuid = dvmObject.getValue().toString();
-//                return new StringObject(vm, uuid);
-//            }
-//        }
-//        return super.callObjectMethodV(vm, dvmObject, signature, vaList);
-//    };
     @Override
     public DvmObject<?> callStaticObjectMethodV(BaseVM vm, DvmClass dvmClass, String signature, VaList vaList) {
-        switch (signature) {
-            case "java/util/UUID->randomUUID()Ljava/util/UUID;":{
+        switch (signature){
+            case "java/util/UUID->randomUUID()Ljava/util/UUID;": {
                 return dvmClass.newObject(UUID.randomUUID());
             }
         }
@@ -81,14 +61,15 @@ public class qxs extends AbstractJni{
 
     @Override
     public DvmObject<?> callObjectMethodV(BaseVM vm, DvmObject<?> dvmObject, String signature, VaList vaList) {
-        switch (signature) {
-            case "java/util/UUID->toString()Ljava/lang/String;":{
+        switch (signature){
+            case "java/util/UUID->toString()Ljava/lang/String;": {
                 String uuid = dvmObject.getValue().toString();
                 return new StringObject(vm, uuid);
             }
         }
         return super.callObjectMethodV(vm, dvmObject, signature, vaList);
-    }
+    };
+
     public static void main(String[] args) throws Exception {
         qxs test = new qxs();
         System.out.println(test.getSFsecurity());
