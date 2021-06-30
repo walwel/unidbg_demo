@@ -107,7 +107,7 @@ public class sina extends AbstractJni{
             // 类似于 frida onLeave
             public void postCall(Emulator<?> emulator, HookZzArm32RegisterContext ctx, HookEntryInfo info) {
                 Pointer result = ctx.getPointerArg(0);
-                System.out.println("input:" + result.getString(0));
+                System.out.println("output:" + result.getString(0));
             }
         });
     }
